@@ -20,12 +20,6 @@ public class Game {
    public Game(){
       player_one=new Player(1);
       player_two=new Player(2);
-<<<<<<< HEAD
-      //number_to_win=5; //testing
-=======
-      /*value hard coded in. Option can be made to change this. */
-      number_to_win=5;
->>>>>>> origin/master
       board=new Board();
       face=new GUI(this, board);
       face.ask_the_question();
