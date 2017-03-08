@@ -20,6 +20,7 @@ public class Game {
    public Game(){
       player_one=new Player(1);
       player_two=new Player(2);
+      /*value hard coded in. Option can be made to change this. */
       number_to_win=5;
       board=new Board();
       face=new GUI(this, board);
