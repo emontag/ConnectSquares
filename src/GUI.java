@@ -8,6 +8,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,8 +27,11 @@ public class GUI extends Interface implements ActionListener, Observer{
    private TextArea textarea;
    private boolean showedPane;
    private Thread thread;
-   Game game;
-   Board bore;
+   private Game game;
+   private Board bore;
+   private boolean computer_playing;
+   private int number_to_win;
+   //resizable TBC for resizable board
    public GUI(Game g, Board b){
       bore=b;
       bore.addObserver(this);
@@ -45,8 +50,8 @@ public class GUI extends Interface implements ActionListener, Observer{
       content.add(textarea);
       jframe.setLayout(new GridLayout(1,2));
       board=new JLabel[8][8];
-      for(int i=0;i<8;i++) {
-         for(int j=0;j<8;j++){
+      for(int i=0;i<board.length;i++) {
+         for(int j=0;j<board[i].length;j++){
             board[i][j]=new JLabel(" ");
             board[i][j].setEnabled(false);
             panel.add(board[i][j]);
@@ -60,12 +65,14 @@ public class GUI extends Interface implements ActionListener, Observer{
          controls[i].setBackground(new Color(217,253,255));
          controls[i].addActionListener(this);
       }
+      //update based on number of questions
       numQuest=new boolean[18];
       jframe.setVisible(true);
    }
 
    @Override
    public void run() {
+      textarea.append("\n");
       for(int i=15;i>0;i--){
          try {
             Thread.sleep(1000);
@@ -157,8 +164,12 @@ public class GUI extends Interface implements ActionListener, Observer{
    }
 
    @Override
-   public boolean ask_about_computer() {
-      String[] modes={"No Computer", "Have Computer"};
+   /**
+    * determines computer and number to win
+    * 
+    */
+   public void ask_the_question() {
+     /* String[] modes={"No Computer", "Have Computer"};
       int rep = JOptionPane.showOptionDialog(null,
               "Choose whether to have a computer!",
               "Mode",
@@ -169,7 +180,29 @@ public class GUI extends Interface implements ActionListener, Observer{
                 null);
       if(rep==-1) System.exit(0);;//adding to exit on abrupt termination to take care of contingencies
       if(rep==0) return false;
-      else return true;
+      else return true;*/
+      String[] modes = {"Have Computer","No Computer"};
+      String[] numbers={"3","4","5","6"};
+      JPanel panel=new JPanel();
+      panel.setLayout(new GridLayout(2,2));
+      JComboBox list=new JComboBox(modes);
+      JComboBox num_list=new JComboBox(numbers);
+      JLabel cLabel=new JLabel("Computer?");
+      panel.add(cLabel);
+      panel.add(list);
+      JLabel nLabel=new JLabel("How Many to Win?");
+      panel.add(nLabel);
+      panel.add(num_list);
+      JOptionPane pane=new JOptionPane(panel);
+      JDialog dialog = pane.createDialog(pane, "Game");
+      dialog.setVisible(true);
+      Object value=pane.getValue();
+      if (value == null) System.exit(1);
+      if(list.getSelectedItem()=="Have Computer"){
+         computer_playing=true;
+      }
+      else computer_playing=false;
+      number_to_win=Integer.parseInt(num_list.getSelectedItem().toString());
    }
 
    @Override
@@ -177,4 +210,11 @@ public class GUI extends Interface implements ActionListener, Observer{
       textarea.append(string);
       
    }
+   public boolean getComputer(){
+      return computer_playing;
+   }
+   public int getNumberToWin(){
+      return number_to_win;
+   }
+   
 }

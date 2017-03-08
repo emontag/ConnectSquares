@@ -68,9 +68,17 @@ public abstract class Interface implements Runnable{
    public abstract void run();
    public abstract boolean chooseAnswer(String question);
 
-   public abstract boolean ask_about_computer();
+   public abstract void ask_the_question();
 
    public abstract void sendOutMsg(String string);
+
+   public abstract int getNumberToWin();
+
+   public abstract boolean getComputer();
+      
+     
+   
+   
   
    
 

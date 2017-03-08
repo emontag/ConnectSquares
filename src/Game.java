@@ -20,10 +20,12 @@ public class Game {
    public Game(){
       player_one=new Player(1);
       player_two=new Player(2);
-      number_to_win=5;
+      //number_to_win=5; //testing
       board=new Board();
       face=new GUI(this, board);
-      computer_playing = face.ask_about_computer();
+      face.ask_the_question();
+      number_to_win=face.getNumberToWin();
+      computer_playing=face.getComputer();
       if(computer_playing){
          player_one.setActive();
          player_two.setInactive();
@@ -103,20 +105,21 @@ public class Game {
          }
       }
       else {
+         if(win(temp)) return;
          Random rand= new Random();
          int choice=rand.nextInt(8)+1;
          if(rand.nextBoolean()) {
-            face.sendOutMsg("Computer right, they get credit!");
+            face.sendOutMsg("\nComputer right, they get credit!");
             board.add(choice, getOtherPlayer().get_player_id());
          }
          else {
             temp.add(r, getOtherPlayer().get_player_id());
             if(!win(temp)){
-               face.sendOutMsg(("Computer is wrong. You get the credit!"));
+               face.sendOutMsg(("\nComputer is wrong. You get the credit!\n"));
                board.add(choice, getActivePlayer().get_player_id());
             }
             else {
-               face.sendOutMsg(("Computer is wrong. No Credit!"));
+               face.sendOutMsg(("\nComputer is wrong. No Credit! \n"));
             }
             
          }
