@@ -7,5 +7,6 @@ Made Text Area more readable
 Fixed issue when computer is playing to get extra turn even if there is a user victory
 
 Future Updates
-Made board of variable length
-Adjust number for victory based on board length
+Make board of variable length
+Adjust number_to_win maximum based on board length
+Computer as "smarter" AI
